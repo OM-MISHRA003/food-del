@@ -25,15 +25,15 @@ const Footer = () => {
             </ul>
         </div>
         <div className="footer-content-right">
-            <h2>GET IN TOUCH</h2>
+            <h2>DEVELOPER</h2>
             <ul>
-                <li>+1-212-456-7890</li>
-                <li>contact@tomato.com</li>
+                <li>Created by Om Mishra</li>
+                <li>Food Delivery Platform</li>
             </ul>
         </div>
       </div>
       <hr />
-      <p className="footer-copyright">Copyright 2024 © Tomato.com - All Right Reserved.</p>
+      <p className="footer-copyright">Copyright 2026 © Made by Om Mishra - All Rights Reserved.</p>
     </div>
   )
 }
