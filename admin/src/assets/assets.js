@@ -5,7 +5,8 @@ import profile_image from './profile_image.png'
 import upload_area from './upload_area.png'
 import parcel_icon from './parcel_icon.png'
 
-export const url = 'https://food-del-1-lcwy.onrender.com'
+// Use environment variable for production, fallback to deployed backend
+export const url = import.meta.env.VITE_API_URL || 'https://food-del-1-lcwy.onrender.com'
 export const currency = '₹'
 
 export const assets ={

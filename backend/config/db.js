@@ -1,11 +1,21 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 
-export const  connectDB = async () =>{
+dotenv.config();
 
-    await mongoose.connect('mongodb+srv://shankarhzb1998:shankarhzb19982003@cluster0.g6yap.mongodb.net/food-del').then(()=>console.log("DB Connected"));
-   
+export const connectDB = async () => {
+    // Use local MongoDB
+    const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/food-del";
+    
+    try {
+        await mongoose.connect(uri);
+        console.log("DB Connected to MongoDB");
+    } catch (err) {
+        console.error("MongoDB connection error:", err);
+        process.exit(1);
+    }
 }
 
+// MongoDB URI is now loaded from .env file for better security.
 
-// add your mongoDB connection string above.
-// Do not use '@' symbol in your databse user's password else it will show an error.
+
