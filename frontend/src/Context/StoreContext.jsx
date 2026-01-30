@@ -1,11 +1,11 @@
 import { createContext, useEffect, useState } from "react";
-import { food_list, menu_list } from "../assets/assets";
+import { menu_list } from "../assets/assets";
 import axios from "axios";
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
 
-    // Use environment variable for production, fallback to deployed backend
+    // Use environment variable for local development, production backend for deployment
     const url = import.meta.env.VITE_API_URL || "https://food-del-1-lcwy.onrender.com"
     const [food_list, setFoodList] = useState([]);
     const [cartItems, setCartItems] = useState({});
