@@ -1,9 +1,13 @@
 import foodModel from "../models/foodModel.js";
 import fs from 'fs'
+import { useMemoryStore, inMemoryFoodData } from "../config/db.js";
 
 // all food list
 const listFood = async (req, res) => {
     try {
+        if (useMemoryStore) {
+            return res.json({ success: true, data: inMemoryFoodData });
+        }
         const foods = await foodModel.find({})
         res.json({ success: true, data: foods })
     } catch (error) {
