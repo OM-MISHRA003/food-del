@@ -3,8 +3,17 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+// Set default JWT_SECRET if not provided
+if (!process.env.JWT_SECRET) {
+    process.env.JWT_SECRET = "default_jwt_secret_for_demo_app_2024";
+}
+
 // Flag to track if we have a real MongoDB connection
 export let useMemoryStore = false;
+
+// In-memory stores
+export const inMemoryUsers = [];
+export const inMemoryOrders = [];
 
 // In-memory food data (used when no MongoDB is available)
 export const inMemoryFoodData = [

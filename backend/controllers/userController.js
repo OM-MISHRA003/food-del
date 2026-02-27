@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import validator from "validator";
 import userModel from "../models/userModel.js";
+import { useMemoryStore, inMemoryUsers } from "../config/db.js";
 
 //create token
 const createToken = (id) => {
@@ -12,7 +13,12 @@ const createToken = (id) => {
 const loginUser = async (req,res) => {
     const {email, password} = req.body;
     try{
-        const user = await userModel.findOne({email})
+        let user;
+        if (useMemoryStore) {
+            user = inMemoryUsers.find(u => u.email === email);
+        } else {
+            user = await userModel.findOne({email});
+        }
 
         if(!user){
             return res.json({success:false,message: "User does not exist"})
@@ -36,8 +42,12 @@ const loginUser = async (req,res) => {
 const registerUser = async (req,res) => {
     const {name, email, password} = req.body;
     try{
-        //check if user already exists
-        const exists = await userModel.findOne({email})
+        let exists;
+        if (useMemoryStore) {
+            exists = inMemoryUsers.find(u => u.email === email);
+        } else {
+            exists = await userModel.findOne({email});
+        }
         if(exists){
             return res.json({success:false,message: "User already exists"})
         }
@@ -51,8 +61,15 @@ const registerUser = async (req,res) => {
         }
 
         // hashing user password
-        const salt = await bcrypt.genSalt(10); // the more no. round the more time it will take
+        const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt)
+
+        if (useMemoryStore) {
+            const userId = Date.now().toString();
+            inMemoryUsers.push({ _id: userId, name, email, password: hashedPassword, cartData: {} });
+            const token = createToken(userId);
+            return res.json({success:true,token});
+        }
 
         const newUser = new userModel({name, email, password: hashedPassword})
         const user = await newUser.save()
